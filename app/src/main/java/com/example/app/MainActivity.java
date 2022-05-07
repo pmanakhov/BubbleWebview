@@ -3,8 +3,11 @@ package com.example.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
+import android.net.Uri;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
 
@@ -18,13 +21,22 @@ public class MainActivity extends Activity {
         mWebView = findViewById(R.id.activity_main_webview);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.setWebViewClient(new WebViewClient());
 
-        // REMOTE RESOURCE
-        // mWebView.loadUrl("https://example.com");
+        Uri uri = getIntent().getData();
+        if(uri != null)
+            mWebView.loadUrl(uri.toString());
+        else
+            mWebView.loadUrl("Put your Bubble URL here");
+    }
 
-        // LOCAL RESOURCE
-        // mWebView.loadUrl("file:///android_asset/index.html");
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Uri uri = intent.getData();
+        if(uri != null)
+            mWebView.loadUrl(uri.toString());
     }
 
     @Override
